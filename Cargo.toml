@@ -1,0 +1,18 @@
+[workspace]
+resolver = "2"
+
+members = [
+  "farm",
+  "farm/meta",
+  "pair",
+  "pair/meta",
+  "permissions-hub",
+  "permissions-hub/meta",
+
+  "energy-integration/energy-factory-mock",
+  "energy-integration/energy-factory-mock/meta",
+  "energy-integration/energy-update",
+  "energy-integration/energy-update/meta",
+  "energy-integration/fees-collector",
+  "energy-integration/fees-collector/meta"
+]

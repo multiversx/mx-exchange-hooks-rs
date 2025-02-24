@@ -3,8 +3,8 @@ multiversx_sc::imports!();
 use farm::{base_functions::ClaimRewardsResultType, EnterFarmResultType};
 
 use crate::{
-    base_impl_wrapper::FarmStakingWrapper, custom_rewards, farm_token_roles,
-    token_attributes::StakingFarmTokenAttributes,
+    base_impl_wrapper::FarmStakingWrapper, custom_rewards, farm_hooks::hook_type::FarmHookType,
+    farm_token_roles, token_attributes::StakingFarmTokenAttributes,
 };
 
 #[multiversx_sc::module]
@@ -48,8 +48,6 @@ pub trait ExternalInteractionsModule:
     + crate::farm_hooks::change_hooks::ChangeHooksModule
     + crate::farm_hooks::call_hook::CallHookModule
 {
-    // TODO: Add hooks
-
     #[payable("*")]
     #[endpoint(stakeFarmOnBehalf)]
     fn stake_farm_on_behalf(&self, user: ManagedAddress) -> EnterFarmResultType<Self::Api> {
@@ -57,6 +55,14 @@ pub trait ExternalInteractionsModule:
         self.require_user_whitelisted(&user, &caller);
 
         let payments = self.get_non_empty_payments();
+        let payments_after_hook = self.call_hook(
+            FarmHookType::BeforeStake,
+            caller.clone(),
+            payments,
+            ManagedVec::new(),
+        );
+        let payments = payments_after_hook;
+
         let farm_token_mapper = self.farm_token();
         self.check_additional_payments_original_owner::<StakingFarmTokenAttributes<Self::Api>>(
             &user,
@@ -73,6 +79,20 @@ pub trait ExternalInteractionsModule:
         let enter_result = self.enter_farm_base::<FarmStakingWrapper<Self>>(user.clone(), payments);
 
         let new_farm_token = enter_result.new_farm_token.payment.clone();
+        let mut output_payments = ManagedVec::new();
+        output_payments.push(new_farm_token);
+        self.push_if_non_zero_payment(&mut output_payments, boosted_rewards_payment.clone());
+
+        let mut output_payments_after_hook = self.call_hook(
+            FarmHookType::AfterStake,
+            caller.clone(),
+            output_payments,
+            ManagedVec::new(),
+        );
+        let new_farm_token = self.pop_first_payment(&mut output_payments_after_hook);
+        let boosted_rewards_payment =
+            self.pop_or_return_payment(&mut output_payments_after_hook, boosted_rewards_payment);
+
         self.send_payment_non_zero(&caller, &new_farm_token);
         self.send_payment_non_zero(&user, &boosted_rewards_payment);
 
@@ -103,10 +123,19 @@ pub trait ExternalInteractionsModule:
         self.migrate_old_farm_positions(&user);
 
         let payments = self.get_non_empty_payments();
-        let claim_result = self.claim_rewards_base_no_farm_token_mint::<FarmStakingWrapper<Self>>(
-            user.clone(),
+        let payments_after_hook = self.call_hook(
+            FarmHookType::BeforeClaimRewards,
+            caller.clone(),
             payments,
+            ManagedVec::new(),
         );
+        let payments = payments_after_hook;
+
+        let mut claim_result = self
+            .claim_rewards_base_no_farm_token_mint::<FarmStakingWrapper<Self>>(
+                user.clone(),
+                payments,
+            );
 
         let mut virtual_farm_token = claim_result.new_farm_token.clone();
 
@@ -120,6 +149,20 @@ pub trait ExternalInteractionsModule:
             &virtual_farm_token.attributes,
         );
         virtual_farm_token.payment.token_nonce = new_farm_token_nonce;
+
+        let mut output_payments = ManagedVec::new();
+        output_payments.push(virtual_farm_token.payment);
+        self.push_if_non_zero_payment(&mut output_payments, claim_result.rewards.clone());
+
+        let mut output_payments_after_hook = self.call_hook(
+            FarmHookType::AfterClaimRewards,
+            caller.clone(),
+            output_payments,
+            ManagedVec::new(),
+        );
+        virtual_farm_token.payment = self.pop_first_payment(&mut output_payments_after_hook);
+        claim_result.rewards =
+            self.pop_or_return_payment(&mut output_payments_after_hook, claim_result.rewards);
 
         self.send_payment_non_zero(&caller, &virtual_farm_token.payment);
         self.send_payment_non_zero(&user, &claim_result.rewards);

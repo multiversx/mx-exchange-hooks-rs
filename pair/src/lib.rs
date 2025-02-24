@@ -3,21 +3,23 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
-mod amm;
+pub mod amm;
 pub mod config;
-mod contexts;
+pub mod contexts;
 pub mod errors;
-mod events;
+pub mod events;
 pub mod fee;
-mod liquidity_pool;
+pub mod liquidity_pool;
 pub mod locking_wrapper;
 pub mod pair_actions;
+pub mod pair_hooks;
 pub mod read_pair_storage;
 pub mod safe_price;
 pub mod safe_price_view;
 
 use crate::errors::*;
 
+use common_structs::Percent;
 use contexts::base::*;
 use pair_actions::common_result_types::{
     AddLiquidityResultType, RemoveLiquidityResultType, SwapTokensFixedInputResultType,
@@ -47,6 +49,9 @@ pub trait Pair<ContractReader>:
     + pair_actions::swap::SwapModule
     + pair_actions::views::ViewsModule
     + pair_actions::common_methods::CommonMethodsModule
+    + pair_hooks::change_hooks::ChangeHooksModule
+    + pair_hooks::call_hook::CallHookModule
+    + banned_addresses::BannedAddressModule
     + utils::UtilsModule
 {
     #[init]
@@ -56,8 +61,8 @@ pub trait Pair<ContractReader>:
         second_token_id: TokenIdentifier,
         router_address: ManagedAddress,
         router_owner_address: ManagedAddress,
-        total_fee_percent: u64,
-        special_fee_percent: u64,
+        total_fee_percent: Percent,
+        special_fee_percent: Percent,
         initial_liquidity_adder: ManagedAddress,
         admins: MultiValueEncoded<ManagedAddress>,
     ) {
@@ -68,37 +73,30 @@ pub trait Pair<ContractReader>:
         );
         require!(first_token_id != second_token_id, ERROR_SAME_TOKENS);
 
-        let lp_token_id = self.lp_token_identifier().get();
-        require!(first_token_id != lp_token_id, ERROR_POOL_TOKEN_IS_PLT);
-        require!(second_token_id != lp_token_id, ERROR_POOL_TOKEN_IS_PLT);
-
         self.set_fee_percents(total_fee_percent, special_fee_percent);
         self.state().set(State::Inactive);
 
         self.router_address().set(&router_address);
-        self.first_token_id().set_if_empty(&first_token_id);
-        self.second_token_id().set_if_empty(&second_token_id);
+        self.first_token_id().set(first_token_id);
+        self.second_token_id().set(second_token_id);
+
         let initial_liquidity_adder_opt = if !initial_liquidity_adder.is_zero() {
             Some(initial_liquidity_adder)
         } else {
             None
         };
         self.initial_liquidity_adder()
-            .set_if_empty(&initial_liquidity_adder_opt);
+            .set(&initial_liquidity_adder_opt);
 
-        if admins.is_empty() {
-            // backwards compatibility
-            let all_permissions = Permissions::OWNER | Permissions::ADMIN | Permissions::PAUSE;
-            self.add_permissions(router_address, all_permissions.clone());
-            self.add_permissions(router_owner_address, all_permissions);
-        } else {
-            self.add_permissions(router_address, Permissions::OWNER | Permissions::PAUSE);
-            self.add_permissions(
-                router_owner_address,
-                Permissions::OWNER | Permissions::PAUSE,
-            );
-            self.add_permissions_for_all(admins, Permissions::ADMIN);
-        };
+        self.add_permissions(router_address, Permissions::OWNER | Permissions::PAUSE);
+        self.add_permissions(
+            router_owner_address,
+            Permissions::OWNER | Permissions::PAUSE,
+        );
+        self.add_permissions_for_all(admins, Permissions::ADMIN);
+
+        let sc_address = self.blockchain().get_sc_address();
+        self.banned_addresses().add(&sc_address);
     }
 
     #[upgrade]
@@ -121,6 +119,7 @@ pub trait Pair<ContractReader>:
             token_identifier.is_valid_esdt_identifier(),
             ERROR_NOT_AN_ESDT
         );
-        self.lp_token_identifier().set(&token_identifier);
+
+        self.lp_token_identifier().set(token_identifier);
     }
 }

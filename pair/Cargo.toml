@@ -29,6 +29,9 @@ path = "../energy-integration/fees-collector"
 [dependencies.utils]
 path = "../common/modules/utils"
 
+[dependencies.banned_addresses]
+path = "../common/modules/banned_addresses"
+
 [dependencies.itertools]
 version = "0.10.1"
 default-features = false
@@ -42,3 +45,7 @@ num-bigint = "0.4.2"
 
 [dev-dependencies.multiversx-sc-scenario]
 version = "=0.53.2"
+
+[dev-dependencies.simple-lock]
+git = "https://github.com/multiversx/mx-exchange-sc"
+rev = "9df990a"

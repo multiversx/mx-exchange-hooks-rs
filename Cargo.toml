@@ -14,5 +14,8 @@ members = [
   "energy-integration/energy-update",
   "energy-integration/energy-update/meta",
   "energy-integration/fees-collector",
-  "energy-integration/fees-collector/meta"
+  "energy-integration/fees-collector/meta",
+
+  "sample-hooks/pair-hooks-sample",
+  "sample-hooks/pair-hooks-sample/meta"
 ]

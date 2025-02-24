@@ -35,14 +35,34 @@ dependencies = [
 ]
 
 [[package]]
+name = "common_errors"
+version = "0.0.0"
+source = "git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a#9df990a062136220d30ad04b5e420032b9dece44"
+dependencies = [
+ "multiversx-sc",
+]
+
+[[package]]
 name = "common_structs"
 version = "0.0.0"
 dependencies = [
- "fixed-supply-token",
- "math",
- "mergeable",
+ "fixed-supply-token 0.0.0",
+ "math 0.0.0",
+ "mergeable 0.0.0",
  "multiversx-sc",
- "unwrappable",
+ "unwrappable 0.0.0",
+]
+
+[[package]]
+name = "common_structs"
+version = "0.0.0"
+source = "git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a#9df990a062136220d30ad04b5e420032b9dece44"
+dependencies = [
+ "fixed-supply-token 0.0.0 (git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a)",
+ "math 0.0.0 (git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a)",
+ "mergeable 0.0.0 (git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a)",
+ "multiversx-sc",
+ "unwrappable 0.0.0 (git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a)",
 ]
 
 [[package]]
@@ -52,10 +72,28 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c34f04666d835ff5d62e058c3995147c06f42fe86ff053337632bca83e42702d"
 
 [[package]]
+name = "energy-factory"
+version = "0.0.0"
+source = "git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a#9df990a062136220d30ad04b5e420032b9dece44"
+dependencies = [
+ "common_structs 0.0.0 (git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a)",
+ "legacy_token_decode_module",
+ "math 0.0.0 (git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a)",
+ "mergeable 0.0.0 (git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a)",
+ "multiversx-sc",
+ "multiversx-sc-modules",
+ "sc_whitelist_module 0.0.0 (git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a)",
+ "simple-lock",
+ "unwrappable 0.0.0 (git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a)",
+ "utils 0.0.0 (git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a)",
+]
+
+[[package]]
 name = "energy-query"
 version = "0.0.0"
 dependencies = [
- "common_structs",
+ "common_structs 0.0.0",
+ "energy-factory",
  "multiversx-sc",
 ]
 
@@ -64,13 +102,13 @@ name = "fees-collector"
 version = "0.0.0"
 dependencies = [
  "common-types",
- "common_errors",
+ "common_errors 0.0.0",
  "energy-query",
  "locking_module",
  "multiversx-sc",
  "multiversx-sc-modules",
- "sc_whitelist_module",
- "utils",
+ "sc_whitelist_module 0.0.0",
+ "utils 0.0.0",
  "week-timekeeping",
  "weekly-rewards-splitting",
 ]
@@ -91,6 +129,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "fixed-supply-token"
+version = "0.0.0"
+source = "git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a#9df990a062136220d30ad04b5e420032b9dece44"
+dependencies = [
+ "multiversx-sc",
+]
+
+[[package]]
 name = "hex"
 version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -101,6 +147,16 @@ name = "hex-literal"
 version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6fe2267d4ed49bc07b63801559be28c718ea06c4738b7a03c94df7386d2cde46"
+
+[[package]]
+name = "legacy_token_decode_module"
+version = "0.0.0"
+source = "git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a#9df990a062136220d30ad04b5e420032b9dece44"
+dependencies = [
+ "common_structs 0.0.0 (git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a)",
+ "multiversx-sc",
+ "utils 0.0.0 (git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a)",
+]
 
 [[package]]
 name = "locking_module"
@@ -117,8 +173,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "math"
+version = "0.0.0"
+source = "git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a#9df990a062136220d30ad04b5e420032b9dece44"
+dependencies = [
+ "multiversx-sc",
+]
+
+[[package]]
 name = "mergeable"
 version = "0.0.0"
+dependencies = [
+ "multiversx-sc",
+]
+
+[[package]]
+name = "mergeable"
+version = "0.0.0"
+source = "git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a#9df990a062136220d30ad04b5e420032b9dece44"
 dependencies = [
  "multiversx-sc",
 ]
@@ -241,8 +313,27 @@ dependencies = [
 name = "sc_whitelist_module"
 version = "0.0.0"
 dependencies = [
- "common_errors",
+ "common_errors 0.0.0",
  "multiversx-sc",
+]
+
+[[package]]
+name = "sc_whitelist_module"
+version = "0.0.0"
+source = "git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a#9df990a062136220d30ad04b5e420032b9dece44"
+dependencies = [
+ "common_errors 0.0.0 (git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a)",
+ "multiversx-sc",
+]
+
+[[package]]
+name = "simple-lock"
+version = "0.0.0"
+source = "git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a#9df990a062136220d30ad04b5e420032b9dece44"
+dependencies = [
+ "common_structs 0.0.0 (git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a)",
+ "multiversx-sc",
+ "multiversx-sc-modules",
 ]
 
 [[package]]
@@ -282,12 +373,31 @@ dependencies = [
 ]
 
 [[package]]
+name = "unwrappable"
+version = "0.0.0"
+source = "git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a#9df990a062136220d30ad04b5e420032b9dece44"
+dependencies = [
+ "multiversx-sc",
+]
+
+[[package]]
 name = "utils"
 version = "0.0.0"
 dependencies = [
- "common_structs",
- "fixed-supply-token",
- "mergeable",
+ "common_structs 0.0.0",
+ "fixed-supply-token 0.0.0",
+ "mergeable 0.0.0",
+ "multiversx-sc",
+]
+
+[[package]]
+name = "utils"
+version = "0.0.0"
+source = "git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a#9df990a062136220d30ad04b5e420032b9dece44"
+dependencies = [
+ "common_structs 0.0.0 (git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a)",
+ "fixed-supply-token 0.0.0 (git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a)",
+ "mergeable 0.0.0 (git+https://github.com/multiversx/mx-exchange-sc?rev=9df990a)",
  "multiversx-sc",
 ]
 
@@ -304,9 +414,10 @@ name = "weekly-rewards-splitting"
 version = "0.0.0"
 dependencies = [
  "common-types",
+ "energy-factory",
  "energy-query",
- "math",
+ "math 0.0.0",
  "multiversx-sc",
- "unwrappable",
+ "unwrappable 0.0.0",
  "week-timekeeping",
 ]

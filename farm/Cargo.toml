@@ -77,6 +77,9 @@ path = "../energy-integration/common-modules/energy-query"
 [dependencies.permissions-hub]
 path = "../permissions-hub"
 
+[dependencies.banned_addresses]
+path = "../common/modules/banned_addresses"
+
 [dependencies.multiversx-sc]
 version = "=0.53.2"
 features = ["esdt-token-payment-legacy-decode"]
@@ -86,3 +89,21 @@ version = "=0.53.2"
 
 [dev-dependencies]
 num-bigint = "0.4.2"
+
+[dev-dependencies.multiversx-sc-scenario]
+version = "=0.53.2"
+
+[dev-dependencies.energy-update]
+path = "../energy-integration/energy-update"
+
+[dev-dependencies.simple-lock]
+git = "https://github.com/multiversx/mx-exchange-sc"
+rev = "9df990a"
+
+[dev-dependencies.energy-factory-mock]
+git = "https://github.com/multiversx/mx-exchange-sc"
+rev = "9df990a"
+
+[dev-dependencies.energy-factory]
+git = "https://github.com/multiversx/mx-exchange-sc"
+rev = "9df990a"

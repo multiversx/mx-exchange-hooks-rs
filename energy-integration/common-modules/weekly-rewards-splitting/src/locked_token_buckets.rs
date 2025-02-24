@@ -1,7 +1,7 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
-use energy_query::energy::Energy;
+use energy_factory::energy::Energy;
 use math::safe_sub;
 use unwrappable::Unwrappable;
 use week_timekeeping::EPOCHS_IN_WEEK;

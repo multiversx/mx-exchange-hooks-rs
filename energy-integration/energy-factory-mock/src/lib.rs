@@ -1,8 +1,8 @@
 #![no_std]
 
-multiversx_sc::imports!();
+use energy_factory::energy::Energy;
 
-use energy_query::energy::Energy;
+multiversx_sc::imports!();
 
 #[multiversx_sc::contract]
 pub trait EnergyFactoryMock {

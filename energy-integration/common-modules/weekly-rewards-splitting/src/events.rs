@@ -2,7 +2,7 @@ multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
 pub use common_types::{Epoch, Week};
-use energy_query::energy::Energy;
+use energy_factory::energy::Energy;
 
 #[multiversx_sc::module]
 pub trait WeeklyRewardsSplittingEventsModule {

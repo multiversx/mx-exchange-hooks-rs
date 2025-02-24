@@ -1,31 +1,13 @@
 #![no_std]
 
+use energy_factory::energy::Energy;
+
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
-
-pub mod energy;
-use energy::*;
 
 static USER_ENERGY_STORAGE_KEY: &[u8] = b"userEnergy";
 static LOCKED_TOKEN_ID_STORAGE_KEY: &[u8] = b"lockedTokenId";
 static BASE_TOKEN_ID_STORAGE_KEY: &[u8] = b"baseAssetTokenId";
-
-mod energy_factory {
-    multiversx_sc::imports!();
-
-    #[multiversx_sc::proxy]
-    pub trait EnergyFactoryProxy {
-        #[endpoint(lockVirtual)]
-        fn lock_virtual(
-            &self,
-            token_id: TokenIdentifier,
-            amount: BigUint,
-            lock_epochs: u64,
-            dest_address: ManagedAddress,
-            energy_address: ManagedAddress,
-        ) -> EsdtTokenPayment;
-    }
-}
 
 #[multiversx_sc::module]
 pub trait EnergyQueryModule {

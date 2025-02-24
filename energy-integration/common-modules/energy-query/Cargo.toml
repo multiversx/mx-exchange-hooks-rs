@@ -13,3 +13,7 @@ features = ["esdt-token-payment-legacy-decode"]
 
 [dependencies.common_structs]
 path = "../../../common/common_structs"
+
+[dependencies.energy-factory]
+git = "https://github.com/multiversx/mx-exchange-sc"
+rev = "9df990a"

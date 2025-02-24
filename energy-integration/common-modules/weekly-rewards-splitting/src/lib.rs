@@ -13,7 +13,7 @@ pub mod update_claim_progress_energy;
 
 use base_impl::WeeklyRewardsSplittingTraitsModule;
 use common_types::PaymentsVec;
-use energy_query::energy::Energy;
+use energy_factory::energy::Energy;
 use week_timekeeping::{Week, EPOCHS_IN_WEEK};
 
 #[derive(TypeAbi, TopEncode, TopDecode, Clone, PartialEq, Debug)]

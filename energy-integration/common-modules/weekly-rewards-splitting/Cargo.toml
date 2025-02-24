@@ -25,3 +25,7 @@ path = "../../../common/traits/unwrappable"
 
 [dependencies.math]
 path = "../../../common/modules/math"
+
+[dependencies.energy-factory]
+git = "https://github.com/multiversx/mx-exchange-sc"
+rev = "9df990a"

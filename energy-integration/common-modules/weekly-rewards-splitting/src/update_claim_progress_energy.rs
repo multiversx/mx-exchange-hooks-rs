@@ -1,7 +1,7 @@
 multiversx_sc::imports!();
 
 use common_types::Week;
-use energy_query::energy::Energy;
+use energy_factory::energy::Energy;
 
 use crate::ClaimProgress;
 

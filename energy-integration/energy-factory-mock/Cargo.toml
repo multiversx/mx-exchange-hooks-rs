@@ -15,5 +15,9 @@ path = "../common-modules/energy-query"
 version = "=0.53.2"
 features = ["esdt-token-payment-legacy-decode"]
 
+[dependencies.energy-factory]
+git = "https://github.com/multiversx/mx-exchange-sc"
+rev = "9df990a"
+
 [dev-dependencies.multiversx-sc-scenario]
 version = "=0.53.2"

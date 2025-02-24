@@ -1,21 +1,5 @@
 multiversx_sc::imports!();
 
-mod simple_lock {
-    multiversx_sc::imports!();
-    multiversx_sc::derive_imports!();
-
-    #[multiversx_sc::proxy]
-    pub trait SimpleLockProxy {
-        #[payable("*")]
-        #[endpoint(lockTokens)]
-        fn lock_tokens_endpoint(
-            &self,
-            unlock_epoch: u64,
-            opt_destination: OptionalValue<ManagedAddress>,
-        ) -> EgldOrEsdtTokenPayment;
-    }
-}
-
 #[multiversx_sc::module]
 pub trait LockingModule {
     #[only_owner]

@@ -10,3 +10,11 @@ path = "src/lib.rs"
 [dependencies.multiversx-sc]
 version = "=0.53.2"
 features = ["esdt-token-payment-legacy-decode"]
+
+[dependencies.energy-factory]
+git = "https://github.com/multiversx/mx-exchange-sc"
+rev = "9df990a"
+
+[dependencies.simple-lock]
+git = "https://github.com/multiversx/mx-exchange-sc"
+rev = "9df990a"

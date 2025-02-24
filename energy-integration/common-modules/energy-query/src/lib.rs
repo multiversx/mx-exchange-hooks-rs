@@ -9,7 +9,7 @@ static USER_ENERGY_STORAGE_KEY: &[u8] = b"userEnergy";
 static LOCKED_TOKEN_ID_STORAGE_KEY: &[u8] = b"lockedTokenId";
 static BASE_TOKEN_ID_STORAGE_KEY: &[u8] = b"baseAssetTokenId";
 
-mod energy_factory_proxy {
+mod energy_factory_proxy_impl {
     multiversx_sc::imports!();
 
     #[multiversx_sc::proxy]
@@ -98,7 +98,7 @@ pub trait EnergyQueryModule {
     fn energy_factory_proxy(
         &self,
         sc_address: ManagedAddress,
-    ) -> energy_factory_proxy::Proxy<Self::Api>;
+    ) -> energy_factory_proxy_impl::Proxy<Self::Api>;
 
     #[view(getEnergyFactoryAddress)]
     #[storage_mapper("energyFactoryAddress")]

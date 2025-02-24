@@ -11,8 +11,6 @@ members = [
 
   "farm-staking/farm-staking",
   "farm-staking/farm-staking/meta",
-  "farm-staking/farm-staking-nft",
-  "farm-staking/farm-staking-nft/meta",
 
   "energy-integration/energy-factory-mock",
   "energy-integration/energy-factory-mock/meta",

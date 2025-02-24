@@ -584,46 +584,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "farm-staking-nft"
-version = "0.0.0"
-dependencies = [
- "banned_addresses",
- "common_errors 0.0.0",
- "common_structs 0.0.0",
- "config",
- "contexts",
- "energy-factory",
- "energy-query 0.0.0",
- "farm",
- "farm-boosted-yields",
- "farm_base_impl",
- "farm_token",
- "fixed-supply-token 0.0.0",
- "math 0.0.0",
- "mergeable 0.0.0",
- "multiversx-sc",
- "multiversx-sc-modules",
- "multiversx-sc-scenario",
- "num-bigint",
- "pair",
- "pausable",
- "permissions_module",
- "rewards",
- "token_send",
- "utils 0.0.0",
- "week-timekeeping",
- "weekly-rewards-splitting",
-]
-
-[[package]]
-name = "farm-staking-nft-abi"
-version = "0.0.0"
-dependencies = [
- "farm-staking-nft",
- "multiversx-sc-meta-lib",
-]
-
-[[package]]
 name = "farm_base_impl"
 version = "0.0.0"
 dependencies = [

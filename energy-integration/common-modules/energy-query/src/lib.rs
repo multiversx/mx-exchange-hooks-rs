@@ -9,23 +9,6 @@ static USER_ENERGY_STORAGE_KEY: &[u8] = b"userEnergy";
 static LOCKED_TOKEN_ID_STORAGE_KEY: &[u8] = b"lockedTokenId";
 static BASE_TOKEN_ID_STORAGE_KEY: &[u8] = b"baseAssetTokenId";
 
-mod energy_factory_proxy_impl {
-    multiversx_sc::imports!();
-
-    #[multiversx_sc::proxy]
-    pub trait EnergyFactoryProxy {
-        #[endpoint(lockVirtual)]
-        fn lock_virtual(
-            &self,
-            token_id: TokenIdentifier,
-            amount: BigUint,
-            lock_epochs: u64,
-            dest_address: ManagedAddress,
-            energy_address: ManagedAddress,
-        ) -> EsdtTokenPayment;
-    }
-}
-
 #[multiversx_sc::module]
 pub trait EnergyQueryModule {
     #[only_owner]
@@ -95,10 +78,7 @@ pub trait EnergyQueryModule {
     }
 
     #[proxy]
-    fn energy_factory_proxy(
-        &self,
-        sc_address: ManagedAddress,
-    ) -> energy_factory_proxy_impl::Proxy<Self::Api>;
+    fn energy_factory_proxy(&self, sc_address: ManagedAddress) -> energy_factory::Proxy<Self::Api>;
 
     #[view(getEnergyFactoryAddress)]
     #[storage_mapper("energyFactoryAddress")]

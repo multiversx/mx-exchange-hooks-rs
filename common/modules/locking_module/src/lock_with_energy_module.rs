@@ -1,21 +1,6 @@
+use energy_factory::virtual_lock::ProxyTrait as _;
+
 multiversx_sc::imports!();
-
-mod energy_factory {
-    multiversx_sc::imports!();
-
-    #[multiversx_sc::proxy]
-    pub trait EnergyFactoryProxy {
-        #[endpoint(lockVirtual)]
-        fn lock_virtual(
-            &self,
-            token_id: TokenIdentifier,
-            amount: BigUint,
-            lock_epochs: u64,
-            dest_address: ManagedAddress,
-            energy_address: ManagedAddress,
-        ) -> EsdtTokenPayment;
-    }
-}
 
 #[multiversx_sc::module]
 pub trait LockWithEnergyModule {

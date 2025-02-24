@@ -42,15 +42,6 @@ pub trait UnbondFarmModule:
         let payment = self.call_value().single_esdt();
         farm_token_mapper.require_same_token(&payment.token_identifier);
 
-        let caller = self.blockchain().get_caller();
-        let payments_after_hook = self.call_hook(
-            FarmHookType::BeforeUnbond,
-            caller.clone(),
-            ManagedVec::from_single_item(payment),
-            ManagedVec::new(),
-        );
-        let payment = payments_after_hook.get(0);
-
         let attributes: UnbondSftAttributes =
             farm_token_mapper.get_token_attributes(payment.token_nonce);
 
@@ -59,6 +50,15 @@ pub trait UnbondFarmModule:
             current_epoch >= attributes.unlock_epoch,
             "Unbond period not over"
         );
+
+        let caller = self.blockchain().get_caller();
+        let payments_after_hook = self.call_hook(
+            FarmHookType::BeforeUnbond,
+            caller.clone(),
+            ManagedVec::from_single_item(payment),
+            ManagedVec::new(),
+        );
+        let payment = payments_after_hook.get(0);
 
         farm_token_mapper.nft_burn(payment.token_nonce, &payment.amount);
 

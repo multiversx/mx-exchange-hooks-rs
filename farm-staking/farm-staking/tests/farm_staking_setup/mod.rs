@@ -12,10 +12,9 @@ use multiversx_sc_scenario::{
 pub type RustBigUint = num_bigint::BigUint;
 
 use config::*;
-use energy_factory::energy::EnergyModule;
-use energy_query::{Energy, EnergyQueryModule};
+use energy_factory::energy::{Energy, EnergyModule};
+use energy_query::EnergyQueryModule;
 use farm_boosted_yields::boosted_yields_factors::BoostedYieldsFactorsModule;
-use farm_boosted_yields::FarmBoostedYieldsModule;
 use farm_staking::custom_rewards::CustomRewardsModule;
 use farm_staking::farm_actions::claim_stake_farm_rewards::ClaimStakeFarmRewardsModule;
 use farm_staking::farm_actions::stake_farm::StakeFarmModule;
@@ -430,14 +429,11 @@ where
             .assert_ok();
     }
 
-    pub fn allow_external_claim_rewards(&mut self, user: &Address) {
+    pub fn allow_external_claim_rewards(&mut self, user: &Address, allow_claim: bool) {
         self.b_mock
             .execute_tx(user, &self.farm_wrapper, &rust_biguint!(0), |sc| {
-                sc.user_total_farm_position(&managed_address!(user)).update(
-                    |user_total_farm_position| {
-                        user_total_farm_position.allow_external_claim_boosted_rewards = true;
-                    },
-                );
+                sc.allow_external_claim(&managed_address!(user))
+                    .set(allow_claim);
             })
             .assert_ok();
     }
@@ -463,7 +459,7 @@ where
                 &self.energy_factory_wrapper,
                 &rust_biguint!(0),
                 |sc| {
-                    sc.user_energy(&managed_address!(user)).set(&Energy::new(
+                    sc.user_energy(&managed_address!(user)).set(Energy::new(
                         BigInt::from(managed_biguint!(energy)),
                         last_update_epoch,
                         managed_biguint!(locked_tokens),

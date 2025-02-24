@@ -82,6 +82,10 @@ impl<M: ManagedTypeApi> FarmToken<M> for StakingFarmTokenAttributes<M> {
     fn get_initial_farming_tokens(&self) -> BigUint<M> {
         &self.current_farm_amount - &self.compounded_reward
     }
+
+    fn get_original_owner(&self) -> ManagedAddress<M> {
+        self.original_owner.clone()
+    }
 }
 
 impl<M: ManagedTypeApi> FixedSupplyToken<M> for StakingFarmTokenAttributes<M> {
@@ -108,8 +112,8 @@ impl<M: ManagedTypeApi> FixedSupplyToken<M> for StakingFarmTokenAttributes<M> {
 
 impl<M: ManagedTypeApi> Mergeable<M> for StakingFarmTokenAttributes<M> {
     #[inline]
-    fn can_merge_with(&self, other: &Self) -> bool {
-        self.original_owner == other.original_owner
+    fn can_merge_with(&self, _other: &Self) -> bool {
+        true
     }
 
     fn merge_with(&mut self, other: Self) {
